@@ -1,3 +1,15 @@
-<html>
-<script src="/app.js" type="module"></script>
-</html>
+<button id="send">Send Message</button>
+<script type="text/javascript" src="node_modules/osc-js/lib/osc.min.js"></script>
+<script type="text/javascript">
+
+  var osc = new OSC();
+  osc.open({ 
+    //host: '127.0.0.1',    // @param {string} Hostname of WebSocket server
+    //port: 9912            // @param {number} Port of WebSocket server
+   }); // connect by default to ws://localhost:8080
+
+  document.getElementById('send').addEventListener('click', () => {
+    var message = new OSC.Message('/test', Math.random());
+    osc.send(message);
+  });
+</script>
