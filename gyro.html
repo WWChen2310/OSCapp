@@ -1,0 +1,34 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>gyro</title>
+  </head>
+  <body>
+    <script>
+    if (window.DeviceOrientationEvent) {
+    document.write('supported');
+    window.addEventListener('deviceorientation', function(event) {
+        var alpha;
+        // Check is iOS device or not
+        if(event.webkitCompassHeading) {
+          document.write("1");
+          alpha = event.webkitCompassHeading; // iOS 裝置必須使用 event.webkitCompassHeading
+          //document.write(alpha);
+        }
+        else {
+          document.write("2");
+          alpha = event.alpha;
+          webkitAlpha = alpha;
+          if(!window.chrome) {
+            webkitAlpha = alpha-270;
+          }
+          //document.write(alpha);
+        }
+      }, false);
+    } else{
+      document.write('not supported');
+    }
+    </script>
+  </body>
+</html>
