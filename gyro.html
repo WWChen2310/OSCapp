@@ -5,30 +5,41 @@
     <title>gyro</title>
   </head>
   <body>
+    <li>X-axis (&beta;): <span id="Orientation_b">0</span><span>&deg;</span></li>
+    <li>Y-axis (&gamma;): <span id="Orientation_g">0</span><span>&deg;</span></li>
+    <li>Z-axis (&alpha;): <span id="Orientation_a">0</span><span>&deg;</span></li>
     <script>
-    if (window.DeviceOrientationEvent) {
-    document.write('supported');
-    window.addEventListener('deviceorientation', function(event) {
-        var alpha;
-        // Check is iOS device or not
-        if(event.webkitCompassHeading) {
-          document.write("1");
-          alpha = event.webkitCompassHeading; // iOS 裝置必須使用 event.webkitCompassHeading
-          //document.write(alpha);
-        }
-        else {
-          document.write("2");
-          alpha = event.alpha;
-          webkitAlpha = alpha;
-          if(!window.chrome) {
-            webkitAlpha = alpha-270;
-          }
-          //document.write(alpha);
-        }
+
+      var beta = document.getElementById('Orientation_b');
+      var gamma = document.getElementById('Orientation_g');
+      var alpha = document.getElementById('Orientation_a');
+
+      // Request permission for iOS 13+ devices
+      if (
+        DeviceMotionEvent &&
+        typeof DeviceMotionEvent.requestPermission === "function"
+      ) {
+        DeviceMotionEvent.requestPermission();
+      }
+
+      window.addEventListener('deviceorientation', (evnet)=> {
+        
+        const rotateDegrees = event.alpha; // alpha: rotation around z-axis
+        const leftToRight = event.gamma; // gamma: left to right
+        const frontToBack = event.beta; // beta: front back motion
+        // const frontToBack = event.beta; // beta: front back motion
+
+        handleOrientationEvent(frontToBack, leftToRight, rotateDegrees);
       }, false);
-    } else{
-      document.write('not supported');
-    }
+
+      function handleOrientationEvent(frontToBack, leftToRight, rotateDegrees) {
+        // document.write('9');
+        beta.innerText = frontToBack;
+        gamma.innerText = leftToRight;
+        alpha.innerText = rotateDegrees;
+      }
+      
+      
     </script>
   </body>
 </html>
